@@ -1,4 +1,4 @@
-import {from, fromEvent} from 'rxjs';
+import { fromEvent } from 'rxjs';
 import 'bootstrap';
 
 class Recipe {
@@ -18,19 +18,21 @@ class Recipe {
 
     constructor() {
 
+        this.initialize();
+
         this.selectElements();
 
         this.addEventListeners();
 
         let array: any = JSON.parse(sessionStorage.getItem('allRecipes') || "[]");
-        for(let i =0; i < array.length;i++) {
-            let row = this.table.insertRow(i);
+        for(let i : number = 0; i < array.length;i++) {
+            let row : HTMLTableRowElement = this.table.insertRow(i);
             row.insertCell(0).innerText = array[i].name;
             row.insertCell(1).innerText = array[i].ingredients;
 
             fromEvent(row.firstChild, 'click').subscribe(()=> this.viewRecipe(row,i));
 
-            let deleteButton = document.createElement('button');
+            let deleteButton : HTMLButtonElement = document.createElement('button');
             deleteButton.setAttribute('class', 'btn btn-info');
             deleteButton.innerText='Delete';
 
@@ -40,6 +42,10 @@ class Recipe {
 
         }
     }
+
+    private initialize = () : void => {
+
+    };
 
     private selectElements = () : void => {
       this.body = document.querySelector('body');
@@ -61,21 +67,21 @@ class Recipe {
     };
 
     private addNewRecipe = () : void => {
-        let array = JSON.parse(sessionStorage.getItem('allRecipes') || "[]");
+        let array : any = JSON.parse(sessionStorage.getItem('allRecipes') || "[]");
 
-        let newItem = {
+        let newItem : any = {
             id: array.length,
             name: this.nameNewRecipe.value,
             ingredients: this.ingredientsNewRecipe.value
         };
 
-        let row = this.table.insertRow(array.length);
+        let row : HTMLTableRowElement = this.table.insertRow(array.length);
         row.insertCell(0).innerText = newItem.name;
         row.insertCell(1).innerText = newItem.ingredients;
 
         fromEvent(row.firstChild, 'click').subscribe((e)=> this.viewRecipe(row,newItem.id));
 
-        let deleteButton = document.createElement('button');
+        let deleteButton : HTMLButtonElement = document.createElement('button');
         deleteButton.setAttribute('class', 'btn btn-info');
         deleteButton.innerText='Delete';
 
@@ -87,8 +93,8 @@ class Recipe {
     };
 
     private deleteRecipe = ( idx : number) : void => {
-        let array = JSON.parse(sessionStorage.getItem('allRecipes'));
-        for( let i = 0; i < array.length; i++){
+        let array : any = JSON.parse(sessionStorage.getItem('allRecipes'));
+        for( let i : number = 0; i < array.length; i++){
             if (i == idx) {
                 array.splice(i, 1);
                 this.table.deleteRow(idx);
@@ -101,15 +107,15 @@ class Recipe {
         this.viewRecipeModal.setAttribute('class', 'modal fade show');
         this.viewRecipeModal.style.display="block";
         this.body.setAttribute('class', 'modal-open');
-        let div = document.createElement('div');
+        let div : HTMLDivElement = document.createElement('div');
         div.setAttribute('class','modal-backdrop fade show');
         this.body.append(div);
 
-        let spanName = document.createElement('span');
+        let spanName : HTMLSpanElement = document.createElement('span');
         spanName.innerText = row.childNodes[0].textContent;
         this.viewRecipeModalName.append(spanName);
 
-        let spanIngredients = document.createElement('span');
+        let spanIngredients : HTMLSpanElement = document.createElement('span');
         spanIngredients.innerText = row.childNodes[1].textContent;
         this.viewRecipeModalIngredients.append(spanIngredients);
 
@@ -122,12 +128,12 @@ class Recipe {
         this.saveButton.classList.remove('d-none');
 
         this.viewRecipeModalName.childNodes[1].remove();
-        let inputName = document.createElement('input');
+        let inputName : HTMLInputElement = document.createElement('input');
         this.viewRecipeModalName.append(inputName);
         inputName.value = row.childNodes[0].textContent;
 
         this.viewRecipeModalIngredients.childNodes[1].remove();
-        let inputIngredients = document.createElement('input');
+        let inputIngredients : HTMLInputElement = document.createElement('input');
         this.viewRecipeModalIngredients.append(inputIngredients);
         inputIngredients.value = row.childNodes[1].textContent;
 
@@ -136,8 +142,8 @@ class Recipe {
     };
 
     private saveRecipe = (row: ChildNode, idx: number, newName: string, newIngredients: string) : void => {
-        let array = JSON.parse(sessionStorage.getItem('allRecipes'));
-        for(let i=0; i<array.length; i++) {
+        let array : any = JSON.parse(sessionStorage.getItem('allRecipes'));
+        for(let i : number = 0; i<array.length; i++) {
             if(idx == i){
                 array[idx].name = newName;
                 array[idx].ingredients = newIngredients;
